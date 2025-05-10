@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitAi - PDF Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            background-color: #10B981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #065F46;
+        }
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>FitAi PDF Generation Test (7 Days Fix)</h1>
+    <p>Click the button below to generate a sample workout plan PDF with all 7 days.</p>
+    
+    <button id="generate-pdf">Generate Full 7-Day PDF</button>
+    
+    <div id="log"></div>
+    
+    <script>
+        // Helper function to log messages
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function capitalizeFirstLetter(string) {
+            if (!string) return '';
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        
+        document.getElementById('generate-pdf').addEventListener('click', function() {
+            log("Starting PDF generation...");
+            try {
+                const { jsPDF } = window.jspdf;
+                
+                // Sample workout plan with all 7 days
+                const workoutPlan = {
+                    summary: "This is a sample 7-day workout plan designed for general fitness. It includes a mix of cardio, strength training, and flexibility exercises to help you achieve a balanced fitness level.",
+                    days: [
+                        {
+                            day: "Day 1",
+                            focus: "Full Body Strength",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 2",
+                            focus: "Cardio",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 3",
+                            focus: "Rest Day",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 4",
+                            focus: "Upper Body",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 5",
+                            focus: "Lower Body",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 6",
+                            focus: "Core",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        },
+                        {
+                            day: "Day 7",
+                            focus: "Active Recovery",
+                            warmup: ["Warm-up exercise 1", "Warm-up exercise 2"],
+                            workout: [
+                                {exercise: "Exercise 1", sets: 3, reps: "10", notes: "Note 1"}
+                            ],
+                            cooldown: ["Cool-down exercise 1", "Cool-down exercise 2"]
+                        }
+                    ],
+                    nutrition: "Sample nutrition advice for a balanced diet."
+                };
+                
+                const userData = {
+                    firstName: "Test",
+                    lastName: "User",
+                    age: "30",
+                    height: "175",
+                    weight: "70",
+                    fitnessGoal: "general",
+                    workoutLocation: "home",
+                    isVegan: false
+                };
+                
+                log(`Creating PDF with ${workoutPlan.days.length} days...`);
+                
+                // Create PDF content
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = doc.internal.pageSize.getWidth();
+                
+                // Add FitAi logo/branding
+                doc.setDrawColor(10, 185, 129); // Primary green color
+                doc.setLineWidth(1);
+                doc.line(20, 10, pageWidth - 20, 10); // Top border
+                
+                doc.setFontSize(32);
+                doc.setTextColor(10, 185, 129); // Primary green color 
+                doc.text('FitAi', pageWidth/2, 25, {align: 'center'});
+                
+                doc.setFontSize(14);
+                doc.setTextColor(100, 100, 100); // Gray color
+                doc.text('Your AI Fitness Assistant', pageWidth/2, 32, {align: 'center'});
+                
+                doc.setDrawColor(10, 185, 129);
+                doc.setLineWidth(1);
+                doc.line(20, 38, pageWidth - 20, 38); // Bottom border
+                
+                // Add header
+                doc.setFontSize(24);
+                doc.setTextColor(10, 185, 129); // Primary green color
+                doc.text('7-Day Workout Plan', pageWidth/2, 50, {align: 'center'});
+                
+                // Add user info
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Plan for: ${userData.firstName} ${userData.lastName}`, 20, 60);
+                doc.text(`Age: ${userData.age} | Height: ${userData.height}cm | Weight: ${userData.weight}kg`, 20, 67);
+                doc.text(`Goal: ${capitalizeFirstLetter(userData.fitnessGoal.replace('-', ' '))}`, 20, 74);
+                
+                // Add summary
+                doc.setFontSize(16);
+                doc.setTextColor(10, 185, 129);
+                doc.text('Plan Summary', 20, 85);
+                
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                const summaryLines = doc.splitTextToSize(workoutPlan.summary, pageWidth - 40);
+                doc.text(summaryLines, 20, 92);
+                
+                let yPos = 92 + (summaryLines.length * 7);
+                
+                // IMPORTANT: Process each day separately with a new page
+                for (let i = 0; i < workoutPlan.days.length; i++) {
+                    const day = workoutPlan.days[i];
+                    log(`Processing day ${i+1}: ${day.day}`);
+                    
+                    // Always start a new page for each day except the first
+                    if (i > 0) {
+                        doc.addPage();
+                        yPos = 20;
+                    } else if (yPos > 220) {
+                        // For the first day, only add a page if we're running out of space
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    // Day title with background
+                    doc.setFillColor(240, 250, 240);
+                    doc.rect(15, yPos - 5, pageWidth - 30, 10, 'F');
+                    
+                    doc.setFontSize(16);
+                    doc.setTextColor(10, 185, 129);
+                    doc.text(`${day.day} - ${day.focus}`, 20, yPos);
+                    yPos += 10;
+                    
+                    // Warm-up
+                    doc.setFontSize(12);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Warm-up:', 20, yPos);
+                    yPos += 6;
+                    
+                    day.warmup.forEach(exercise => {
+                        doc.text(`• ${exercise}`, 25, yPos);
+                        yPos += 6;
+                    });
+                    
+                    yPos += 2;
+                    
+                    // Main workout
+                    doc.text('Workout:', 20, yPos);
+                    yPos += 6;
+                    
+                    day.workout.forEach(exercise => {
+                        doc.text(`• ${exercise.exercise}: ${exercise.sets} sets × ${exercise.reps} reps`, 25, yPos);
+                        yPos += 6;
+                        
+                        if (exercise.notes) {
+                            doc.setFontSize(10);
+                            doc.text(`   ${exercise.notes}`, 25, yPos);
+                            doc.setFontSize(12);
+                            yPos += 5;
+                        }
+                    });
+                    
+                    yPos += 2;
+                    
+                    // Cool-down
+                    doc.text('Cool-down:', 20, yPos);
+                    yPos += 6;
+                    
+                    day.cooldown.forEach(exercise => {
+                        doc.text(`• ${exercise}`, 25, yPos);
+                        yPos += 6;
+                    });
+                }
+                
+                // Add nutrition on a new page
+                doc.addPage();
+                
+                // Add FitAi mini header to nutrition page
+                doc.setFontSize(14);
+                doc.setTextColor(10, 185, 129);
+                doc.text('FitAi - Your AI Fitness Assistant', pageWidth/2, 15, {align: 'center'});
+                
+                doc.setFontSize(18);
+                doc.setTextColor(10, 185, 129);
+                doc.text('Nutrition Guidelines', pageWidth/2, 30, {align: 'center'});
+                
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                const nutritionLines = doc.splitTextToSize(workoutPlan.nutrition, pageWidth - 40);
+                doc.text(nutritionLines, 20, 45);
+                
+                // Add footer to all pages
+                const totalPages = doc.internal.getNumberOfPages();
+                log(`Adding footers to ${totalPages} pages`);
+                
+                for(let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(10);
+                    doc.setTextColor(150);
+                    doc.text('Generated by FitAi - Your AI Fitness Assistant', pageWidth/2, 290, {align: 'center'});
+                    doc.text(`Page ${i} of ${totalPages}`, pageWidth - 20, 290, {align: 'right'});
+                }
+                
+                // Save PDF
+                doc.save(`FitAi_7_Day_Plan_Test.pdf`);
+                log("PDF generated successfully with all 7 days included!");
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                log(`Error: ${error.message}`);
+                alert('There was an error generating the PDF: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+// FitAi JavaScript Functionality
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+    
+    // Set active navigation based on current page
+    const currentPage = window.location.pathname.split("/").pop();
+    const navLinks = document.querySelectorAll('nav a');
+    
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (currentPage === linkPage || (currentPage === '' && linkPage === 'index.html')) {
+            link.classList.add('nav-active');
+        }
+    });
+
+    // ... rest of the code ...
+
+    const defaultMap = tt.map({
+        key: 'JXPnqva3lZanMKstFTttkppZnHor4IXr',
+        container: 'map-container',
+        center: [-73.935242, 40.730610],
+        zoom: 10
+    });
+
+    // Add map controls
+    defaultMap.addControl(new tt.NavigationControl());
+    defaultMap.addControl(new tt.FullscreenControl());
+}); // Close the DOMContentLoaded event listener 

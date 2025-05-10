@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test PDF Generation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <h1>Test PDF Generation</h1>
+    <button id="generate-pdf">Generate PDF</button>
+
+    <script>
+        function capitalizeFirstLetter(string) {
+            if (!string) return '';
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        document.getElementById('generate-pdf').addEventListener('click', function() {
+            try {
+                const { jsPDF } = window.jspdf;
+                
+                console.log("Creating PDF...");
+                // Create PDF content
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = doc.internal.pageSize.getWidth();
+                
+                // Add header
+                doc.setFontSize(24);
+                doc.setTextColor(10, 185, 129); // Primary green color
+                doc.text('FitAi Test PDF', pageWidth/2, 20, {align: 'center'});
+                
+                // Add user info
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Plan for: Test User`, 20, 30);
+                
+                // Save PDF
+                doc.save(`FitAi_Test.pdf`);
+                console.log("PDF created successfully!");
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('There was an error generating the PDF: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
